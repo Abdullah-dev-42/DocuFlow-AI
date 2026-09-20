@@ -1,0 +1,34 @@
+# Environment files
+.env
+backend/.env
+frontend/.env
+*.env
+
+# Virtual environments
+.venv/
+venv/
+backend/venv/
+
+# Python cache & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database & Uploads
+*.db
+docuflow.db
+backend/docuflow.db
+uploads/
+backend/uploads/
+
+# Frontend dependencies & builds
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
