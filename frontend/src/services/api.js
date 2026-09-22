@@ -1,5 +1,6 @@
-const RAW_API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
-const API_BASE_URL = RAW_API_URL.replace(/\/+$/, '');
+const RAW_API_URL = import.meta.env.VITE_API_URL || 'https://docuflow-ai-z9mr.onrender.com';
+const API_BASE_URL = RAW_API_URL.trim().replace(/\/+$/, '');
+
 
 
 async function parseResponse(response) {
