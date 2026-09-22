@@ -26,21 +26,26 @@ except Exception:
 
 app = FastAPI(title="DocuFlow AI API")
 
-frontend_url_env = os.getenv("FRONTEND_URL", "http://localhost:5173,http://127.0.0.1:5173")
-raw_origins = [url.strip().rstrip("/") for url in frontend_url_env.split(",") if url.strip()]
-default_locals = ["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:5174", "http://127.0.0.1:5174"]
-allowed_origins = []
-for origin in raw_origins + default_locals:
-    if origin and origin not in allowed_origins:
-        allowed_origins.append(origin)
-        allowed_origins.append(f"{origin}/")
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
+
+allowed_origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://documentflow-ai.vercel.app",
+]
+
+if frontend_url:
+    for url in frontend_url.split(","):
+        cleaned = url.strip().rstrip("/")
+        if cleaned and cleaned not in allowed_origins:
+            allowed_origins.append(cleaned)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
     allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -68,9 +73,10 @@ def get_runtime_config():
     is_configured = bool(api_key and api_key not in {"your_api_key_here", "your_gemini_api_key_here"})
     return {
         "gemini_configured": is_configured,
-        "model": os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+        "model": os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
         "message": "Gemini API key is configured." if is_configured else "Gemini API key is missing. Add it to environment variables to enable AI analysis.",
     }
+
 
 
 
